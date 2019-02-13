@@ -1,47 +1,65 @@
-import numpy as np
 import tensorflow as tf
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D
-from keras.layers import Activation, Dropout, Flatten, Dense
+from tensorflow.python.keras.layers import Conv2D, MaxPooling2D
+from tensorflow.python.keras.layers import Dropout, Flatten, Dense
+from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
 
-model = Sequential()
-# Conv layer 1
-model.add(Conv2D(32, (3, 3), input_shape=(200, 60, 3)))
-# ReLU layer 1
-model.add(Activation('relu'))
-# Conv layer 2
-model.add(Conv2D(32, (3, 3), input_shape=(200, 60, 3)))
-# ReLU layer 2
-model.add(Activation('relu'))
-# Pool layer 1
-model.add(MaxPooling2D(pool_size=(2, 2)))
 
-# Conv layer 3
-model.add(Conv2D(32, (3, 3), input_shape=(200, 60, 3)))
-# ReLU layer 3
-model.add(Activation('relu'))
-# Conv layer 4
-model.add(Conv2D(32, (3, 3), input_shape=(200, 60, 3)))
-# ReLU layer 4
-model.add(Activation('relu'))
-# Pool layer 2
-model.add(MaxPooling2D(pool_size=(2, 2)))
+def vgg_net(n_classes, input_shape):
+    model = tf.keras.Sequential()
 
-# Conv layer 5
-model.add(Conv2D(32, (3, 3), input_shape=(200, 60, 3)))
-# ReLU layer 5
-model.add(Activation('relu'))
-# Conv layer 6
-model.add(Conv2D(32, (3, 3), input_shape=(200, 60, 3)))
-# ReLU layer 6
-model.add(Activation('relu'))
-# Pool layer 3
-model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Conv2D(32, (3, 3), input_shape=input_shape, padding='same', activation='relu'))
+    model.add(Conv2D(32, (3, 3), activation='relu', padding='same'))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    model.add(Dropout(0.5))
 
-# From 3D feature maps to 1D feature vectors
-model.add(Flatten())
-model.add(Dense(64))
-model.add(Activation('relu'))
-model.add(Dropout(0.5))
-model.add(Dense(24))
-model.add(Activation('softmax'))
+    model.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
+    model.add(Conv2D(64, (3, 3), activation='relu', padding='same', ))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    model.add(Dropout(0.5))
+
+    model.add(Conv2D(64, (3, 3), activation='relu', padding='same', ))
+    model.add(Conv2D(64, (3, 3), activation='relu', padding='same', ))
+    model.add(Conv2D(64, (3, 3), activation='relu', padding='same', ))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    model.add(Dropout(0.5))
+
+    model.add(Conv2D(128, (3, 3), activation='relu', padding='same', ))
+    model.add(Conv2D(128, (3, 3), activation='relu', padding='same', ))
+    model.add(Conv2D(128, (3, 3), activation='relu', padding='same', ))
+    model.add(MaxPooling2D(pool_size=(2, 2), strides=(2, 2)))
+    model.add(Dropout(0.5))
+
+    model.add(Flatten())
+    model.add(Dense(2048, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(1000, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(n_classes, activation='softmax'))
+
+    model.compile(optimizer=tf.train.AdamOptimizer(),
+                  loss='categorical_crossentropy',
+                  metrics=['accuracy'])
+
+    return model
+
+
+def fit(model, X_train, y_train, X_test, y_test, epochs, batch_size):
+    img_gen = ImageDataGenerator()
+
+    return model.fit_generator(
+        img_gen.flow(X_train, y_train),
+        steps_per_epoch=len(X_train) // batch_size,
+        epochs=epochs,
+        validation_data=img_gen.flow(X_test, y_test),
+        validation_steps=len(X_test) // batch_size,
+        verbose=1
+    )
+
+
+def evaluate(model, X_train, y_train):
+    img_gen = ImageDataGenerator()
+    # evaluate the model
+    scores = model.evaluate_generator(img_gen.flow(X_train, y_train),
+                                      workers=4,
+                                      verbose=1)
+    print("%s: %.2f" % (model.metrics_names[1], scores[1]))
