@@ -5,6 +5,7 @@ import sklearn.metrics as metrics
 
 
 def plot_evaluation(history):
+    """Plot the value of Accuracy and Loss for each epoch"""
     fig, axes = plt.subplots(2, sharex=True, figsize=(12, 8))
 
     axes[0].set_ylabel("Loss", fontsize=14)
@@ -22,10 +23,12 @@ def plot_evaluation(history):
 
 
 def classification_report(y_test, y_pred, lb):
+    """Return the classification report"""
     return metrics.classification_report(y_test.argmax(axis=-1), y_pred.argmax(axis=-1), target_names=lb.classes_)
 
 
 def confusion_matrix(y_test, y_pred):
+    """Return the confusion matrix"""
     return metrics.confusion_matrix(y_test.argmax(axis=-1), y_pred.argmax(axis=-1), )
 
 

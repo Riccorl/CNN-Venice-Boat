@@ -8,6 +8,7 @@ import classes
 
 
 def binarize(X, y, lb):
+    """Binarize the data set"""
     # scale the raw pixel intensities to the range [0, 1]
     X_bin = np.array(X, dtype="float") / 255.0
     y_labels = np.array(y)
@@ -18,6 +19,7 @@ def binarize(X, y, lb):
 
 
 def read_images(path, image_size, general=True):
+    """Read images from directory and resize them"""
     data = []
     labels = []
     for subdir, dirs, files in os.walk(path):
@@ -29,7 +31,6 @@ def read_images(path, image_size, general=True):
                     image = cv2.resize(image, (image_size[0], image_size[1]))
                     image = img_to_array(image)
                     data.append(image)
-
                     # extract the class label from the image path and update the
                     # labels list
                     label = subdir.split(os.path.sep)[-1]

@@ -5,6 +5,7 @@ from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
 
 
 def vgg_net(n_classes, input_shape):
+    """A small VGG network with 13 layers"""
     model = tf.keras.Sequential()
 
     model.add(Conv2D(32, (3, 3), input_shape=input_shape, padding='same', activation='relu'))

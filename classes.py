@@ -1,3 +1,4 @@
+# Specific classes subset
 specific_classes = {'Alilaguna',
                     'Lanciafino10m',
                     'Lanciafino10mBianca',
