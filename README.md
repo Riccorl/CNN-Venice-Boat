@@ -1,10 +1,14 @@
 # CNN Venice Boat Image Classifier
 
-Different Convolutional Neural Networks were trained to classify different types of boats.
+Convolutional Neural Networks trained to classify different types of boats.
 
 ## MarDCT data set
 
 Maritime Detection, Classification, and Tracking ([MarDCT](http://www.dis.uniroma1.it/~labrococo/MAR/classification.htm)) is a database of videos and images containing data coming from multiple sources (fixed, moving, and Pan-Tilt-Zoom cameras) and from different scenarios. The classification data set contains 800x240 images and is organized in two different folders, one for the training phase and the other for testing the trained model.
+
+<p align="center">
+    <img src="resources/gondola_ex.jpg" alt="Gondola">
+</p>
 
 The training set contains 4774 images from 24 different categories of boats navigating in
 the City of Venice. The jpeg files inside the folders are named according to the date, hour, and system track number. The folder "Water" contains false positives. The train folder is organized in the following way:
@@ -175,6 +179,10 @@ Epoch 30/30
 Training Time: 00:08:41.77
 ```
 
+<p align="center">
+    <img src="resources/vgg_droput_05.png" alt="Training metrics with dropout rate at 0.5">
+</p>
+
 In the following report, there are precision, recall and f1-score for each class, and different averages values. The model performs well for classes that have a good number of images, like General Trasport and People Trasport boats, but it has lower scores for classes with fewer images, for example, Rowing boats.
 
 ```
@@ -316,4 +324,4 @@ Lanciamaggioredi10mBianca       0.00      0.00      0.00         6
 
 ## Further improvements
 
-There are of course areas of improvements. The images are preprocessed and rescaled to a smaller size (128x128) to be fitted in the memory. With the new tensorflow's Dataset API, the images can be loaded into the memory and preprocessed in batches. This allows increasing the image size to prevent losing too much information. It's also interesting to try different types of CNN architectures both trained from the beginning and pre-trained.
+There are of course areas of improvements. The images are preprocessed and rescaled to a smaller size (128x128) to be fitted in the memory. With the new tensorflow's Dataset API, the images can be loaded into the memory and preprocessed in batches. This allows increasing the image size to prevent losing too much information.
