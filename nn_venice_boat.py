@@ -44,14 +44,6 @@ def timer(start, end):
     minutes, seconds = divmod(rem, 60)
     return "{:0>2}:{:0>2}:{:05.2f}".format(int(hours), int(minutes), seconds)
 
-"""# Google Colab operations."""
-
-# mount Drive
-from google.colab import drive
-drive.mount('/content/drive')
-
-"""# Prepare the dataset"""
-
 # initialize the number of epochs to train for, initial learning rate,
 # batch size, and image dimensions
 EPOCHS = 30

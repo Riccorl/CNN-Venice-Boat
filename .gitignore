@@ -1,4 +1,9 @@
 # Created by .ignore support plugin (hsz.mobi)
+
+### Custom
+data
+nn_venice_boat.py
+
 ### macOS template
 # General
 .DS_Store
