@@ -24,10 +24,12 @@ def main():
     print(tf.VERSION)
     print(tf.keras.__version__)
 
-    data, labels = data_prep.read_images('data/train', IMAGE_DIMS, general=True)
-    print('Train Set loaded')
-    data_test, labels_test = data_prep.read_images('data/test', IMAGE_DIMS, general=True)
-    print('Test Set loaded')
+    data, labels = data_prep.read_images("data/train", IMAGE_DIMS, general=True)
+    print("Train Set loaded")
+    data_test, labels_test = data_prep.read_images(
+        "data/test", IMAGE_DIMS, general=True
+    )
+    print("Test Set loaded")
 
     lb = LabelBinarizer()
     X_train, y_train = data_prep.binarize(data, labels, lb)
@@ -41,17 +43,17 @@ def main():
     start = time.time()
     history = VGGNet.fit(model, X_train, y_train, X_test, y_test, EPOCHS, BS)
     end = time.time()
-    print('Training Time: ' + timer(start, end))
+    print("Training Time: " + timer(start, end))
 
     # Metrics
     metrics.plot_evaluation(history)
     y_pred = model.predict(X_test)
     classification_report = metrics.classification_report(y_test, y_pred, lb)
-    print('Classification report : \n', classification_report)
+    print("Classification report : \n", classification_report)
     confusion_matrix = metrics.confusion_matrix(y_test, y_pred)
-    print('Confusion Matrix : \n', confusion_matrix)
+    print("Confusion Matrix : \n", confusion_matrix)
     metrics.print_confusion_matrix(y_test, y_pred, lb)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

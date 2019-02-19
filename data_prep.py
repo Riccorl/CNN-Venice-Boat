@@ -24,7 +24,7 @@ def read_images(path, image_size, general=True):
     labels = []
     for subdir, dirs, files in os.walk(path):
         for file in files:
-            if file.endswith('.jpg'):
+            if file.endswith(".jpg"):
                 if general:
                     # load the image, pre-process it, and store it in the data list
                     image = cv2.imread(os.path.join(subdir, file))
